@@ -7,6 +7,8 @@ import com.zju.edu.gcs.common.result.Result;
 import com.zju.edu.gcs.common.result.ResultEnum;
 import com.zju.edu.gcs.dto.LoginDTO;
 import com.zju.edu.gcs.dto.RegisterDTO;
+import com.zju.edu.gcs.dto.TokenDTO;
+import com.zju.edu.gcs.model.User;
 import com.zju.edu.gcs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,7 +28,7 @@ public class UserController {
         Result<TokenStatus> result = new Result<>();
         TokenStatus tokenStatus;
         try{
-            tokenStatus = userService.getUser(loginDTO);
+            tokenStatus = userService.getToken(loginDTO);
         }catch (NirException e){
             result.setCode(e.getCode());
             result.setMsg(e.getMessage());
@@ -60,6 +62,23 @@ public class UserController {
 
         result.setCode(ResultEnum.SUCCESS.getCode());
         result.setMsg(ResultEnum.SUCCESS.getMsg());
+        return result;
+    }
+
+    @PostMapping("/getUser")
+    public Result<User> getUser(@RequestBody TokenDTO tokenDTO){
+        Result<User> result = new Result<>();
+        User user = new User();
+        try{
+            user = userService.getUser(tokenDTO);
+        }catch (Exception e){
+            result.setCode(NirExceptionEnum.GENERAL_EXCEPTION.getCode());
+            result.setMsg(e.getMessage());
+            return result;
+        }
+        result.setCode(ResultEnum.SUCCESS.getCode());
+        result.setMsg(ResultEnum.SUCCESS.getMsg());
+        result.setData(user);
         return result;
     }
 }
