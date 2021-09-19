@@ -1,5 +1,8 @@
 package com.zju.edu.gcs.controller;
 
+import com.zju.edu.gcs.common.entity.TokenStatus;
+import com.zju.edu.gcs.common.exception.NirException;
+import com.zju.edu.gcs.common.exception.NirExceptionEnum;
 import com.zju.edu.gcs.common.result.Result;
 import com.zju.edu.gcs.common.result.ResultEnum;
 import com.zju.edu.gcs.dto.LoginDTO;
@@ -19,18 +22,42 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/login")
-    public Result<Boolean> login(@RequestBody LoginDTO loginDTO){
-        Result<Boolean> result = new Result<>();
+    public Result<TokenStatus> login(@RequestBody LoginDTO loginDTO){
+        Result<TokenStatus> result = new Result<>();
+        TokenStatus tokenStatus;
+        try{
+            tokenStatus = userService.getUser(loginDTO);
+        }catch (NirException e){
+            result.setCode(e.getCode());
+            result.setMsg(e.getMessage());
+            return result;
+        }catch (Exception e){
+            result.setCode(NirExceptionEnum.GENERAL_EXCEPTION.getCode());
+            result.setMsg(e.getMessage());
+            return result;
+
+        }
         result.setCode(ResultEnum.SUCCESS.getCode());
         result.setMsg(ResultEnum.SUCCESS.getMsg());
-        result.setData(userService.getUser(loginDTO));
+        result.setData(tokenStatus);
         return result;
     }
 
     @PostMapping("/register")
     public Result<Void> register(@RequestBody RegisterDTO registerDTO){
         Result<Void> result = new Result<>();
-        userService.addUser(registerDTO);
+        try{
+            userService.addUser(registerDTO);
+        }catch (NirException e){
+            result.setCode(e.getCode());
+            result.setMsg(e.getMessage());
+            return result;
+        }catch (Exception e){
+            result.setCode(NirExceptionEnum.GENERAL_EXCEPTION.getCode());
+            result.setMsg(e.getMessage());
+            return result;
+        }
+
         result.setCode(ResultEnum.SUCCESS.getCode());
         result.setMsg(ResultEnum.SUCCESS.getMsg());
         return result;

@@ -1,5 +1,9 @@
 package com.zju.edu.gcs.service;
 
+import com.zju.edu.gcs.common.entity.TokenStatus;
+import com.zju.edu.gcs.common.exception.NirException;
+import com.zju.edu.gcs.common.exception.NirExceptionEnum;
+import com.zju.edu.gcs.common.util.JwtUtil;
 import com.zju.edu.gcs.common.util.MD5Util;
 import com.zju.edu.gcs.dto.LoginDTO;
 import com.zju.edu.gcs.dto.RegisterDTO;
@@ -17,20 +21,27 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public Boolean getUser(LoginDTO loginDTO){
+    public TokenStatus getUser(LoginDTO loginDTO){
         String username = loginDTO.getUsername();
         String password = MD5Util.md5Encode(loginDTO.getPassword());
-        List<User> list = userRepository.findAllByUsernameAndAndPassword(username, password);
-        if(CollectionUtils.isEmpty(list)){
-            return false;
+        User user = userRepository.findAllByUsernameAndAndPassword(username, password);
+        if(user == null){
+            throw new NirException(NirExceptionEnum.NO_USER_FOUND);
         }
-        return true;
+        TokenStatus tokenStatus = JwtUtil.createJwt(user.getId().toString(), user.getUsername());
+        return tokenStatus;
     }
 
     public void addUser(RegisterDTO registerDTO){
         User user = new User();
-        registerDTO.setPassword(MD5Util.md5Encode(registerDTO.getPassword()));
-        BeanUtils.copyProperties(registerDTO,user);
-        userRepository.saveAndFlush(user);
+        List<User> list = userRepository.findAllByUsername(registerDTO.getUsername());
+        if(CollectionUtils.isEmpty(list)){
+            registerDTO.setPassword(MD5Util.md5Encode(registerDTO.getPassword()));
+            BeanUtils.copyProperties(registerDTO,user);
+            userRepository.saveAndFlush(user);
+        }else{
+            throw new NirException(NirExceptionEnum.USER_EXIST);
+        }
+
     }
 }
