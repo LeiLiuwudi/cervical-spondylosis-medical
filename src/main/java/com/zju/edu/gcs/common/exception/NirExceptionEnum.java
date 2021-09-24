@@ -8,7 +8,7 @@ public enum NirExceptionEnum {
     USER_EXIST("301", "该用户名已存在"),
     USER_UNLOGIN("302", "用户尚未登录"),
 
-    NO_DISEASE_FOUND("400", "该编号病种不存在"),
+    PARAMETER_ERROR("400", "参数错误"),
     NO_RECORD_FOUND("401", "病历不存在"),
     ;
     private String code;

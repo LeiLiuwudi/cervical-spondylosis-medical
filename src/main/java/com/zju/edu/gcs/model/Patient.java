@@ -18,6 +18,7 @@ public class Patient {
 
     private String name;
     private Integer doctorId;
+    private String doctorName;
     private Integer gender;
     private Date birthday;
     private String profession;
