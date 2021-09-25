@@ -27,4 +27,5 @@ public class Patient {
     private String pastHistory;
     private String initialDiagnosis;
     private String diagnoseBasis;
+    private Date createTime;
 }

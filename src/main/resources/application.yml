@@ -16,3 +16,5 @@ spring:
     # 配置在日志中打印出执行的 SQL 语句信息。
     show-sql: true
     # 配置指明在程序启动的时候要删除并且创建实体类对应的表。
+file:
+  location: E:\infraFile

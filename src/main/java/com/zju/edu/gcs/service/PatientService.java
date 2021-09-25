@@ -10,6 +10,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -21,6 +22,7 @@ public class PatientService {
     public void addPatient(PatientDTO patientDTO){
         Patient patient = new Patient();
         BeanUtils.copyProperties(patientDTO, patient);
+        patient.setCreateTime(new Date());
         patientRepository.saveAndFlush(patient);
     }
 
@@ -37,6 +39,7 @@ public class PatientService {
         }else{
             Patient patient = new Patient();
             BeanUtils.copyProperties(patientDTO, patient);
+            patient.setCreateTime(new Date());
             patientRepository.saveAndFlush(patient);
         }
     }

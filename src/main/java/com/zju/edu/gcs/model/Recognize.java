@@ -8,17 +8,16 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.util.Date;
 
-@Entity(name = "user")
+@Entity(name = "recognize")
 @Data
-public class User {
+public class Recognize {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String username;
-    private String password;
-
-    private String trueName;
-
+    private Integer patientId;
+    private String patientName;
+    private String infraredPath;
+    private String recognizeResult;
     private Date createTime;
 }

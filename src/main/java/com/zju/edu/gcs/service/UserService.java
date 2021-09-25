@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -39,6 +40,7 @@ public class UserService {
         if(CollectionUtils.isEmpty(list)){
             registerDTO.setPassword(MD5Util.md5Encode(registerDTO.getPassword()));
             BeanUtils.copyProperties(registerDTO,user);
+            user.setCreateTime(new Date());
             userRepository.saveAndFlush(user);
         }else{
             throw new NirException(NirExceptionEnum.USER_EXIST);
