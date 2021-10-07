@@ -5,9 +5,11 @@ import com.zju.edu.gcs.common.result.Result;
 import com.zju.edu.gcs.common.result.ResultEnum;
 import com.zju.edu.gcs.dto.PatientDTO;
 import com.zju.edu.gcs.dto.QueryPatientDTO;
+import com.zju.edu.gcs.dto.TextComparisonDTO;
 import com.zju.edu.gcs.model.Patient;
 import com.zju.edu.gcs.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -80,4 +82,22 @@ public class PatientController {
         result.setMsg(ResultEnum.SUCCESS.getMsg());
         return result;
     }
+
+    @PostMapping("/textComparison")
+    public Result<List<Patient>> textComparison(@RequestBody TextComparisonDTO textComparisonDTO){
+        Result<List<Patient>> result = new Result<>();
+        List<Patient> list;
+        try{
+            list = patientService.textComparison(textComparisonDTO);
+        }catch (Exception e){
+            result.setCode(NirExceptionEnum.GENERAL_EXCEPTION.getCode());
+            result.setMsg(e.getMessage());
+            return result;
+        }
+        result.setData(list);
+        result.setCode(ResultEnum.SUCCESS.getCode());
+        result.setMsg(ResultEnum.SUCCESS.getMsg());
+        return result;
+    }
+
 }
