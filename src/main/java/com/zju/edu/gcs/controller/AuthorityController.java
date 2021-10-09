@@ -20,7 +20,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@CrossOrigin
 @RestController
 @RequestMapping(value = "/authority")
 public class AuthorityController {
@@ -93,6 +93,7 @@ public class AuthorityController {
         List<RoleDTO> roleDTOS;
         try {
             roleDTOS = roleService.listRoles();
+            roleDTOS.forEach(roleDTO -> roleDTO.setContainUserMap(roleService.getUserNameById(roleDTO.getContainUserId())));
         } catch (NirException e) {
             result.setCode(e.getCode());
             result.setMsg(e.getMessage());

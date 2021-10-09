@@ -5,10 +5,7 @@ import lombok.Data;
 import org.apache.tomcat.util.buf.StringUtils;
 import org.springframework.util.CollectionUtils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -39,6 +36,8 @@ public class RoleDTO {
     private String authorityManagement;
 
     private List<Integer> containUserId;
+
+    private Map<Integer, String> containUserMap;
 
     private Date createTime;
 
@@ -76,6 +75,7 @@ public class RoleDTO {
         roleDTO.setContainUserId(role.getContainUserId() == null ? new ArrayList<>() :
                 Arrays.asList(role.getContainUserId().split(",")).stream().map(Integer::valueOf).collect(Collectors.toList()));
         roleDTO.setCreateTime(role.getCreateTime());
+        roleDTO.setStatAnalysisAuthority(role.getStatAnalysisAuthority());
         return roleDTO;
     }
 }

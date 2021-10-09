@@ -17,6 +17,7 @@ import org.springframework.util.CollectionUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -55,9 +56,8 @@ public class RoleService {
         if (role == null) {
             throw new NirException(NirExceptionEnum.ROlE_NOT_EXIST);
         }
-        Role entity = RoleDTO.toEntity(roleDTO);
-        entity.setId(role.getId());
-        roleRepository.save(entity);
+        roleRepository.save(RoleDTO.toEntity(roleDTO));
+
     }
 
     public void addUserIntoRole(String username, String roleName) {
@@ -107,5 +107,10 @@ public class RoleService {
         List<Integer> integerList = userIdList.stream().map(Integer::valueOf).collect(Collectors.toList());
         List<User> userList = userRepository.findAllByIdIn(integerList);
         return userList.stream().map(user -> RegisterDTO.fromEntity(user)).collect(Collectors.toList());
+    }
+
+    public Map<Integer, String> getUserNameById(List<Integer> idList) {
+        List<User> users = userRepository.findAllByIdIn(idList);
+        return users.stream().collect(Collectors.toMap(User::getId, User::getTrueName));
     }
 }
