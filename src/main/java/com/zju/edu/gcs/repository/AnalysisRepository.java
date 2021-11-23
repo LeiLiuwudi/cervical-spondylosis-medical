@@ -9,4 +9,6 @@ import org.springframework.stereotype.Component;
 public interface AnalysisRepository extends JpaRepository<Analysis, Integer> {
     @Query(value = "SELECT count(id) FROM analysis where function=?1", nativeQuery = true)
     Integer findAnalysisCount(String function);
+
+    Analysis findAnalysisById(Integer id);
 }
