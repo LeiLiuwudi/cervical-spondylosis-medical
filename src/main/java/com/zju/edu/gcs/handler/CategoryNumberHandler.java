@@ -13,7 +13,7 @@ import java.util.List;
 
 @Service
 public class CategoryNumberHandler extends AbstractStatisticHandler<StatisticDTO>{
-    private List<String> xAxisData = Arrays.asList("正常", "颈椎疲劳", "颈椎劳损", "颈椎间盘突出", "颈椎强行性病变");
+    private List<String> xAxisData = Arrays.asList("正常", "颈椎疲劳", "颈椎劳损", "颈椎间盘突出", "颈椎退行性病变");
 
     @Autowired
     private PatientRepository patientRepository;
